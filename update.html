@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/output.css" />
+</head>
+
+<body>
+    <div id="loader" class="loading d-none"></div>
+    <div class="container w-1/3 m-auto p-9 rounded">
+        <h1 class="text-center text-2xl">Update Post </h1>
+        <div class="relative float-label-input">
+            <input type="text" id="postID" placeholder=" "
+                class="block w-full bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-md py-3 px-3 block appearance-none leading-normal focus:border-blue-400">
+            <label for="postID"
+                class="absolute top-3 left-0 text-gray-400 pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">ID</label>
+        </div>
+        <div class="relative float-label-input">
+            <input type="text" id="postTitle" placeholder=" "
+                class="block w-full bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-md py-3 px-3 block appearance-none leading-normal focus:border-blue-400">
+            <label for="postTitle"
+                class="absolute top-3 left-0 text-gray-400 pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">Title</label>
+        </div>
+
+        <div class="relative float-label-input">
+            <input type="text" placeholder=" " id="postDetails"
+                class="block bg-white w-full focus:outline-none focus:shadow-outline border border-red-500 rounded-md py-3 px-3 block appearance-none leading-normal"
+                value="error@mail">
+            <label for="postDetails"
+                class="absolute top-3 left-0 text-red-500 pointer-events-none transition duration-200 ease-in-outbg-white px-2">Error</label>
+        </div>
+
+        <!-- <div class="relative float-label-input">
+            <input type="text" placeholder=" "
+                class="block bg-white w-full focus:outline-none focus:shadow-outline border border-green-500 rounded-md py-3 px-3 block appearance-none leading-normal"
+                value="success@mail.com">
+            <label
+                class="absolute top-3 left-0 text-green-500 pointer-events-none transition duration-200 ease-in-outbg-white px-2">Success</label>
+        </div> -->
+
+        <button
+            class="rounded border border-purple-500 bg-gradient-to-r from-purple-600 to-purple-900 hover:border-purple-900 py-3 px-9 w-full text-white"
+            onclick="UpdateData()">Update
+            Post →</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+    </script>
+    <script>
+        fillExistingData();
+        async function fillExistingData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log("urlParams", urlParams)
+            const id = urlParams.get('id');
+            console.log("id", id)
+            document.getElementById('loader').classList.remove('d-none');
+            let URL = `https://jsonplaceholder.typicode.com/posts/${id}`
+            console.log("id", id)
+            let res = await axios.get(URL);
+            console.log("res", res)
+            document.getElementById('loader').classList.add('d-none');
+            if (res.status === 200) {
+                let items = res.data;
+                console.log("items", items)
+                document.getElementById('postID').value = items.id;
+                document.getElementById('postTitle').value = items.title;
+                document.getElementById('postDetails').value = items.body;
+            }
+        }
+
+        async function UpdateData() {
+            let postID = document.getElementById('postID').value;
+            let postTitle = document.getElementById('postTitle').value;
+            let postDetails = document.getElementById('postDetails').value;
+
+            let URL = `https://jsonplaceholder.typicode.com/posts/${postID}`
+            // document.getElementById('loader').classList.remove('d-none');
+            let res = await axios.put(URL, {
+                title: postTitle,
+                body: postDetails
+            });
+            // document.getElementById('loader').classList.add('d-none');
+            if (res.status === 200) {
+                console.log(res);
+                window.location = "index.html"
+
+            } else {
+                alert("erroe")
+            }
+        }
+    </script>
+
+</body>
+
+</html>
