@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/output.css" />
+</head>
+
+<body>
+    <div id="loader" class="loading d-none"></div>
+    <div class="container w-1/3 m-auto p-9 rounded">
+        <h1 class="text-center text-2xl">Create Post </h1>
+        <!-- <div class="relative float-label-input">
+            <input type="text" id="userID" placeholder=" "
+                class="block w-full bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-md py-3 px-3 block appearance-none leading-normal focus:border-blue-400">
+            <label for="userID"
+                class="absolute top-3 left-0 text-gray-400 pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">User
+                ID</label>
+        </div> -->
+        <div class="relative float-label-input">
+            <input type="text" id="postTitle" placeholder=" "
+                class="block w-full bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-md py-3 px-3 block appearance-none leading-normal focus:border-blue-400">
+            <label for="postTitle"
+                class="absolute top-3 left-0 text-gray-400 pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">Title</label>
+        </div>
+
+        <div class="relative float-label-input">
+            <input type="text" placeholder=" " id="postDetails"
+                class="block bg-white w-full focus:outline-none focus:shadow-outline border border-gray-300 rounded-md py-10 px-3 block appearance-none leading-normal">
+            <label for="postDetails"
+                class="absolute top-3 left-0 text-gray-400 pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">Description...</label>
+        </div>
+
+        <!-- <div class="relative float-label-input">
+            <input type="text" placeholder=" "
+                class="block bg-white w-full focus:outline-none focus:shadow-outline border border-green-500 rounded-md py-3 px-3 block appearance-none leading-normal"
+                value="success@mail.com">
+            <label
+                class="absolute top-3 left-0 text-green-500 pointer-events-none transition duration-200 ease-in-outbg-white px-2">Success</label>
+        </div> -->
+
+        <button
+            class="rounded border border-purple-500 bg-gradient-to-r from-purple-600 to-purple-900 hover:border-purple-900 py-3 px-9 w-full text-white"
+            onclick="createData()">
+            Create Post →</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+    </script>
+    <script>
+        async function createData() {
+            // let postID = document.getElementById('postID').value;
+            // let userID = document.getElementById('userID').value;
+            let postTitle = document.getElementById('postTitle').value;
+            let postDetails = document.getElementById('postDetails').value;
+            console.log("userID", postTitle, postDetails)
+            let URL = `https://jsonplaceholder.typicode.com/posts`
+            document.getElementById('loader').classList.remove('d-none');
+            let res = await axios.post(URL, {
+                // userId: userID,
+                title: postTitle,
+                body: postDetails
+            });
+            console.log("res", res)
+            // document.getElementById('loader').classList.add('d-none');
+            if (res.status === 201) {
+                console.log(res);
+                window.location = "index.html"
+                // document.getElementById('loader').classList.remove('d-none'); 
+                document.getElementById('loader').classList.add('d-none');
+
+            } else {
+                alert("error")
+                document.getElementById('loader').classList.add('d-none');
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
